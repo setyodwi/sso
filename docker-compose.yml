@@ -19,7 +19,7 @@ services:
       - "636:636"
     volumes:
       - ./cas-data/ldap-database:/var/lib/ldap
-      - ./letsencrypt/live/directoryxx.com:/container/service/slapd/assets/certs
+      - ./letsencrypt/live/kuncimasuk.com:/container/service/slapd/assets/certs
       - ./cas-data/config-slapd:/etc/ldap/slapd.d
       - ./cas-data/schema/spid.schema:/container/service/slapd/assets/config/bootstrap/schema/spid.schema
     networks:
@@ -58,7 +58,7 @@ services:
   #     context: cas-management-overlay
   #     dockerfile: Dockerfile
   #   links:
-  #     - cas:cas.directoryxx.com
+  #     - cas:cas.kuncimasuk.com
   #   volumes:
   #     - ./letsencrypt/:/etc/letsencrypt
   #     - ./cas-management-overlay/etc/cas:/etc/cas
@@ -75,7 +75,7 @@ services:
   #   volumes:
   #     - ./apache2-cas-docker/example/html:/var/www/html
   #     - ./apache2-cas-docker/example/default.conf:/etc/apache2/sites-available/000-default.conf
-  #     - ./letsencrypt/live/directoryxx.com:/etc/certs
+  #     - ./letsencrypt/live/kuncimasuk.com:/etc/certs
   #   restart: unless-stopped
   #   networks:
   #     - web

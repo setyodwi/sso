@@ -5,9 +5,9 @@ objectClass: olcDatabaseConfig
 objectClass: olcMdbConfig
 olcDatabase: {1}mdb
 olcDbDirectory: /var/lib/ldap
-olcSuffix: dc=directoryxx,dc=com
+olcSuffix: dc=kuncimasuk,dc=com
 olcLastMod: TRUE
-olcRootDN: cn=admin,dc=directoryxx,dc=com
+olcRootDN: cn=admin,dc=kuncimasuk,dc=com
 olcDbCheckpoint: 512 30
 olcDbMaxSize: 1073741824
 structuralObjectClass: olcMdbConfig
@@ -15,8 +15,8 @@ entryUUID: 23097728-31eb-103a-9590-ada05862a0af
 creatorsName: cn=admin,cn=config
 createTimestamp: 20200524091729Z
 olcAccess: {0}to attrs=userPassword,shadowLastChange by self write by dn="cn
- =admin,dc=directoryxx,dc=com" write by anonymous auth by * none
-olcAccess: {1}to * by self read by dn="cn=admin,dc=directoryxx,dc=com" write
+ =admin,dc=kuncimasuk,dc=com" write by anonymous auth by * none
+olcAccess: {1}to * by self read by dn="cn=admin,dc=kuncimasuk,dc=com" write
   by * none
 olcDbIndex: uid eq
 olcDbIndex: mail eq
