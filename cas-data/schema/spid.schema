@@ -1,0 +1,1 @@
+attributetype ( 2.25.1 NAME 'spidCode' DESC 'SPID - Spid Code' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} ) objectclass ( 2.25 NAME 'spidPerson' DESC '' SUP inetOrgPerson STRUCTURAL MUST ( spidCode ) ) 

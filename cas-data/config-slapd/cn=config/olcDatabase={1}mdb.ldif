@@ -1,0 +1,30 @@
+# AUTO-GENERATED FILE - DO NOT EDIT!! Use ldapmodify.
+# CRC32 948eb879
+dn: olcDatabase={1}mdb
+objectClass: olcDatabaseConfig
+objectClass: olcMdbConfig
+olcDatabase: {1}mdb
+olcDbDirectory: /var/lib/ldap
+olcSuffix: dc=directoryxx,dc=com
+olcLastMod: TRUE
+olcRootDN: cn=admin,dc=directoryxx,dc=com
+olcDbCheckpoint: 512 30
+olcDbMaxSize: 1073741824
+structuralObjectClass: olcMdbConfig
+entryUUID: 23097728-31eb-103a-9590-ada05862a0af
+creatorsName: cn=admin,cn=config
+createTimestamp: 20200524091729Z
+olcAccess: {0}to attrs=userPassword,shadowLastChange by self write by dn="cn
+ =admin,dc=directoryxx,dc=com" write by anonymous auth by * none
+olcAccess: {1}to * by self read by dn="cn=admin,dc=directoryxx,dc=com" write
+  by * none
+olcDbIndex: uid eq
+olcDbIndex: mail eq
+olcDbIndex: memberOf eq
+olcDbIndex: entryCSN eq
+olcDbIndex: entryUUID eq
+olcDbIndex: objectClass eq
+olcRootPW:: e1NTSEF9cEZIVDRYUnVEanRheGUyTVY0RTBLdmt2b1p2OXJGdDk=
+entryCSN: 20200527111827.309687Z#000000#000#000000
+modifiersName: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth
+modifyTimestamp: 20200527111827Z

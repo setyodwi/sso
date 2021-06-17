@@ -1,0 +1,131 @@
+version: "3"
+services:
+  openldap:
+    image: osixia/openldap:1.3.0
+    container_name: openldap
+    hostname: ldap.kuncimasuk.com
+    restart: unless-stopped
+    tty: true
+    environment:
+      LDAP_ORGANISATION: "My Company"
+      LDAP_DOMAIN: "kuncimasuk.com"
+      LDAP_ADMIN_PASSWORD: "password"
+      LDAP_TLS_CRT_FILENAME: "cert.pem"
+      LDAP_TLS_KEY_FILENAME: "privkey.pem"
+      LDAP_TLS_CA_CRT_FILENAME: "fullchain.pem"
+    command: --copy-service
+    ports:
+      - "389:389"
+      - "636:636"
+    volumes:
+      - ./cas-data/ldap-database:/var/lib/ldap
+      - ./letsencrypt/live/directoryxx.com:/container/service/slapd/assets/certs
+      - ./cas-data/config-slapd:/etc/ldap/slapd.d
+      - ./cas-data/schema/spid.schema:/container/service/slapd/assets/config/bootstrap/schema/spid.schema
+    networks:
+      - cas-dev
+
+  phpldapadmin:
+    image: osixia/phpldapadmin:0.9.0
+    container_name: phpldapadmin
+    links:
+      - openldap:ldap-host
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - ./letsencrypt/live/kuncimasuk.com:/container/service/phpldapadmin/assets/apache2/certs
+    environment:
+      PHPLDAPADMIN_LDAP_HOSTS: ldap-host
+      PHPLDAPADMIN_HTTPS_CRT_FILENAME: "cert.pem"
+      PHPLDAPADMIN_HTTPS_KEY_FILENAME: "privkey.pem"
+      PHPLDAPADMIN_HTTPS_CA_CRT_FILENAME: "fullchain.pem"
+    networks:
+      - cas-dev
+
+  cas:
+    build:
+      context: cas-overlay-template
+      dockerfile: Dockerfile
+    container_name: cas
+    links:
+      - openldap:ldap-host
+    networks:
+      - cas-dev
+
+  # casmanagement:
+  #   container_name: casmanagement
+  #   build:
+  #     context: cas-management-overlay
+  #     dockerfile: Dockerfile
+  #   links:
+  #     - cas:cas.directoryxx.com
+  #   volumes:
+  #     - ./letsencrypt/:/etc/letsencrypt
+  #     - ./cas-management-overlay/etc/cas:/etc/cas
+  #   networks:
+  #   - web
+
+  # sample_webapp1:
+  #   build:
+  #     context: apache2-cas-docker
+  #     dockerfile: Dockerfile
+  #   container_name: sample_webapp1
+  #   ports:
+  #     - "8085:80"
+  #   volumes:
+  #     - ./apache2-cas-docker/example/html:/var/www/html
+  #     - ./apache2-cas-docker/example/default.conf:/etc/apache2/sites-available/000-default.conf
+  #     - ./letsencrypt/live/directoryxx.com:/etc/certs
+  #   restart: unless-stopped
+  #   networks:
+  #     - web
+
+  #Nginx Service
+  webserver_cas:
+    image: nginx:alpine
+    container_name: webserver_cas
+    restart: unless-stopped
+    links:
+      - cas:cas-host
+      - phpldapadmin:pla-hosts
+      #- casmanagement:casmanagement-hosts
+      #- sample_webapp1:sample_webapp1_hosts
+    tty: true
+    ports:
+      - "443:443"
+      - "80:80"
+    volumes:
+      - ./letsencrypt/live/kuncimasuk.com:/etc/nginx/certs
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - cas-dev
+
+  mongo:
+    image: mongo
+    container_name: mongodb
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - ./cas-data/mongodb-data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    networks:
+      - cas-dev
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongodb-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+    networks:
+      - cas-dev
+
+networks:
+  cas-dev:
+    external: true
