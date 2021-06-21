@@ -93,7 +93,7 @@ services:
     tty: true
     ports:
       - "9443:443"
-      - "8081:80"
+      - "8082:80"
     volumes:
       - ./letsencrypt/live/kuncimasuk.com:/etc/nginx/certs
       - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
