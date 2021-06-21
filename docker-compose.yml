@@ -92,8 +92,8 @@ services:
       #- sample_webapp1:sample_webapp1_hosts
     tty: true
     ports:
-      - "443:443"
-      - "80:80"
+      - "9443:443"
+      - "8081:80"
     volumes:
       - ./letsencrypt/live/kuncimasuk.com:/etc/nginx/certs
       - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
